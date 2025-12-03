@@ -1,44 +1,56 @@
 // src/pages/Login.jsx - CLEAN & RESPONSIVE
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaCalendarDay, FaChartLine, FaUsers, FaCheckCircle,
-  FaUser, FaLock, FaBuilding, FaMapMarkerAlt, FaShieldAlt,
-  FaSyncAlt, FaArrowRight, FaTimes, FaRocket, FaBell
-} from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaCalendarDay,
+  FaChartLine,
+  FaUsers,
+  FaCheckCircle,
+  FaUser,
+  FaLock,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaShieldAlt,
+  FaSyncAlt,
+  FaArrowRight,
+  FaTimes,
+  FaRocket,
+  FaBell,
+} from "react-icons/fa";
+import RapportsoftLogo from "../assets/CompanyLogoIMG/rapportlogo1.png";
 
 const statusImages = [
-  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600',
-  'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1600',
-  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600',
-  'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600'
+  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600",
+  "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1600",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600",
+  "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600",
 ];
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    companyName: 'DailyStatus Pro',
-    department: '',
-    username: '',
-    password: '',
-    otp: ''
+    companyName: "DailyStatus Pro",
+    department: "",
+    username: "",
+    password: "",
+    otp: "",
   });
-  
+
   const [showOtp, setShowOtp] = useState(false);
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: '', type: '' });
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   const statusMetrics = [
-    { icon: <FaCalendarDay />, value: '1,247', label: 'Daily Updates' },
-    { icon: <FaUsers />, value: '89', label: 'Active Teams' },
-    { icon: <FaCheckCircle />, value: '94%', label: 'Completion' },
-    { icon: <FaChartLine />, value: '37%', label: 'Productivity' }
+    { icon: <FaCalendarDay />, value: "1,247", label: "Daily Updates" },
+    { icon: <FaUsers />, value: "89", label: "Active Teams" },
+    { icon: <FaCheckCircle />, value: "94%", label: "Completion" },
+    { icon: <FaChartLine />, value: "37%", label: "Productivity" },
   ];
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: '', type: '' }), 4000);
+    setTimeout(() => setToast({ show: false, message: "", type: "" }), 4000);
   };
 
   const handleChange = (e) => {
@@ -47,27 +59,29 @@ const Login = () => {
 
   const handleSendOtp = () => {
     if (!formData.department) {
-      showToast('Please select your department', 'error');
+      showToast("Please select your department", "error");
       return;
     }
     if (!formData.username) {
-      showToast('Please enter your username', 'error');
+      showToast("Please enter your username", "error");
       return;
     }
     if (!formData.password) {
-      showToast('Please enter your password', 'error');
+      showToast("Please enter your password", "error");
       return;
     }
-    
+
     setIsLoading(true);
     setTimeout(() => {
       setShowOtp(true);
       setIsLoading(false);
       setOtpCountdown(30);
-      showToast('OTP sent to your registered email', 'success');
-      
+      showToast("OTP sent to your registered email", "success");
+
       const timer = setInterval(() => {
-        setOtpCountdown(prev => prev <= 1 ? (clearInterval(timer), 0) : prev - 1);
+        setOtpCountdown((prev) =>
+          prev <= 1 ? (clearInterval(timer), 0) : prev - 1
+        );
       }, 1000);
     }, 1000);
   };
@@ -75,20 +89,20 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!showOtp || !formData.otp) {
-      showToast('Please complete OTP verification', 'error');
+      showToast("Please complete OTP verification", "error");
       return;
     }
-    
+
     setIsLoading(true);
     setTimeout(() => {
-      showToast('Login successful! Redirecting...', 'success');
+      showToast("Login successful! Redirecting...", "success");
       setIsLoading(false);
     }, 1500);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage(prev => (prev + 1) % statusImages.length);
+      setCurrentImage((prev) => (prev + 1) % statusImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -103,17 +117,23 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-md px-4 py-3 rounded-lg shadow-lg border-l-4 backdrop-blur-sm ${
-              toast.type === 'error' 
-                ? 'bg-red-500/95 text-white border-red-600' 
-                : 'bg-green-500/95 text-white border-green-600'
+              toast.type === "error"
+                ? "bg-red-500/95 text-white border-red-600"
+                : "bg-green-500/95 text-white border-green-600"
             }`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${toast.type === 'error' ? 'bg-red-200' : 'bg-green-200'}`} />
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    toast.type === "error" ? "bg-red-200" : "bg-green-200"
+                  }`}
+                />
                 <span className="text-sm font-medium">{toast.message}</span>
               </div>
-              <button onClick={() => setToast({ show: false, message: '', type: '' })}>
+              <button
+                onClick={() => setToast({ show: false, message: "", type: "" })}
+              >
                 <FaTimes className="text-sm" />
               </button>
             </div>
@@ -132,8 +152,8 @@ const Login = () => {
             className="absolute inset-0"
             style={{
               backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           />
         ))}
@@ -150,55 +170,75 @@ const Login = () => {
           {/* Left Panel - Hidden on mobile, shown on desktop */}
           <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-purple-700 flex-col justify-between p-8">
             <div>
-              <div className="flex items-center gap-4 mb-8">
-                <div className="bg-white/20 p-3 rounded-xl">
-                  <FaRocket className="text-2xl text-white" />
+              <div className="mb-8">
+                {/* Company Logo */}
+                <div className="mb-6">
+                  <img
+                    src={RapportsoftLogo}
+                    alt="RapportSoft Logo"
+                    className="h-10 w-auto"
+                  />
                 </div>
-                <div>
-                  <h1 className="text-4xl font-bold text-white">Daily<span className="font-black">Status</span></h1>
-                  <p className="text-white/80 text-sm">Team Productivity Dashboard</p>
+
+                {/* Daily Status Section */}
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20">
+                  <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-xl">
+                    <FaRocket className="text-2xl text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-bold text-white mb-1">
+                      Daily<span className="font-black">Status</span>
+                    </h1>
+                    <p className="text-white/80 text-sm">
+                      Real-time team productivity tracker
+                    </p>
+                  </div>
                 </div>
               </div>
 
-             <div className="grid grid-cols-2 gap-4 mb-8">
-  {statusMetrics.map((metric, index) => (
-    <motion.div
-      key={index}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20"
-    >
-      <div className="flex items-center gap-3">
-        {/* Colorful icons based on index */}
-        {index === 0 && (
-          <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg text-white">
-            {metric.icon}
-          </div>
-        )}
-        {index === 1 && (
-          <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg text-white">
-            {metric.icon}
-          </div>
-        )}
-        {index === 2 && (
-          <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg text-white">
-            {metric.icon}
-          </div>
-        )}
-        {index === 3 && (
-          <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg text-white">
-            {metric.icon}
-          </div>
-        )}
-        <div>
-          <div className="text-2xl font-bold text-white">{metric.value}</div>
-          <div className="text-white/70 text-sm">{metric.label}</div>
-        </div>
-      </div>
-    </motion.div>
-  ))}
-</div>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {statusMetrics.map((metric, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20"
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Colorful icons based on index */}
+                      {index === 0 && (
+                        <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg text-white">
+                          {metric.icon}
+                        </div>
+                      )}
+                      {index === 1 && (
+                        <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg text-white">
+                          {metric.icon}
+                        </div>
+                      )}
+                      {index === 2 && (
+                        <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg text-white">
+                          {metric.icon}
+                        </div>
+                      )}
+                      {index === 3 && (
+                        <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg text-white">
+                          {metric.icon}
+                        </div>
+                      )}
+                      <div>
+                        <div className="text-2xl font-bold text-white">
+                          {metric.value}
+                        </div>
+                        <div className="text-white/70 text-sm">
+                          {metric.label}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
@@ -214,56 +254,79 @@ const Login = () => {
           {/* Right Panel - Form (Full width on mobile, half on desktop) */}
           <div className="w-full lg:w-1/2 bg-white/95 backdrop-blur-sm p-6 md:p-8">
             {/* Mobile Header (only on mobile/tablet) */}
-            <div className="lg:hidden text-center mb-6">
+<div className="lg:hidden text-center mb-6">
+  {/* Company Logo with dark background */}
+  <div className="mb-4 bg-gradient-to-r from-blue-500 to-purple-600 backdrop-blur-sm rounded-xl p-4 inline-block">
+    <img
+      src={RapportsoftLogo}
+      alt="RapportSoft Logo"
+      className="h-10 w-auto mx-auto"
+    />
+  </div>
+
+  {/* DailyStatus with icon */}
+      <div className="lg:hidden text-center mb-6">
               <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg mb-3 inline-flex">
                 <FaRocket />
                 <h1 className="text-xl font-bold">DailyStatus</h1>
               </div>
-              <h2 className="text-lg font-semibold text-gray-800 mb-1">Welcome Back</h2>
+              <h2 className="text-lg font-semibold text-gray-800 mb-1">
+                Welcome Back
+              </h2>
               <p className="text-gray-500 text-sm">Sign in to continue</p>
             </div>
+</div>
 
             {/* Mobile Stats (only on mobile/tablet) */}
-         <div className="lg:hidden mb-6">
-  <div className="flex overflow-x-auto gap-3 pb-2">
-    {statusMetrics.map((metric, index) => (
-      <div key={index} className="flex-shrink-0 bg-white rounded-lg p-3 min-w-[100px] border border-gray-200 shadow-sm">
-        <div className="text-center">
-          {/* Colorful icon for each metric */}
-          <div className="flex justify-center mb-2">
-            {index === 0 && (
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg text-white">
-                {metric.icon}
+            <div className="lg:hidden mb-6 justify-center">
+              <div className="flex overflow-x-auto gap-3 pb-2 justify-center">
+                {statusMetrics.map((metric, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 bg-white rounded-lg p-3 min-w-[100px] border border-gray-200 shadow-sm"
+                  >
+                    <div className="text-center">
+                      {/* Colorful icon for each metric */}
+                      <div className="flex justify-center mb-2">
+                        {index === 0 && (
+                          <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg text-white">
+                            {metric.icon}
+                          </div>
+                        )}
+                        {index === 1 && (
+                          <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg text-white">
+                            {metric.icon}
+                          </div>
+                        )}
+                        {index === 2 && (
+                          <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg text-white">
+                            {metric.icon}
+                          </div>
+                        )}
+                        {index === 3 && (
+                          <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg text-white">
+                            {metric.icon}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-lg font-bold text-gray-800">
+                        {metric.value}
+                      </div>
+                      <div className="text-gray-500 text-xs">
+                        {metric.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
-            {index === 1 && (
-              <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg text-white">
-                {metric.icon}
-              </div>
-            )}
-            {index === 2 && (
-              <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg text-white">
-                {metric.icon}
-              </div>
-            )}
-            {index === 3 && (
-              <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg text-white">
-                {metric.icon}
-              </div>
-            )}
-          </div>
-          <div className="text-lg font-bold text-gray-800">{metric.value}</div>
-          <div className="text-gray-500 text-xs">{metric.label}</div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
+            </div>
 
             {/* Form Header (desktop) */}
             <div className="hidden lg:block text-center mb-8">
               <div className="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Welcome Back
+              </h2>
               <p className="text-gray-500">Sign in to access your dashboard</p>
             </div>
 
@@ -353,7 +416,7 @@ const Login = () => {
                 {showOtp && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     className="overflow-hidden"
                   >
@@ -379,12 +442,12 @@ const Login = () => {
                           disabled={otpCountdown > 0}
                           className={`px-4 py-2 rounded-lg font-medium text-sm ${
                             otpCountdown > 0
-                              ? 'bg-gray-100 text-gray-400' 
-                              : 'bg-blue-500 text-white'
+                              ? "bg-gray-100 text-gray-400"
+                              : "bg-blue-500 text-white"
                           }`}
                         >
                           <FaSyncAlt className="inline mr-2" />
-                          {otpCountdown > 0 ? `${otpCountdown}s` : 'Resend'}
+                          {otpCountdown > 0 ? `${otpCountdown}s` : "Resend"}
                         </button>
                       </div>
                     </div>
@@ -434,7 +497,10 @@ const Login = () => {
                 )}
 
                 <div className="text-center">
-                  <button type="button" className="text-gray-500 hover:text-blue-600 text-sm hover:underline">
+                  <button
+                    type="button"
+                    className="text-gray-500 hover:text-blue-600 text-sm hover:underline"
+                  >
                     Forgot password?
                   </button>
                 </div>
